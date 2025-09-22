@@ -58,7 +58,7 @@ reviewing this submission, or if I can keep it.-->
            async function loadJSON1() {
                 const box = document.getElementById("fileBox1");
                 try {
-                    const response = await fetch("valid_example_1.json");
+                    const response = await fetch("src/valid_example_1.json");
                     if (!response.ok) throw new Error("File not found");
                     const text = await response.text(); 
                     box.textContent = "Valid example 1:\n\n" + text;
@@ -69,7 +69,7 @@ reviewing this submission, or if I can keep it.-->
             async function loadJSON2() {
                 const box = document.getElementById("fileBox2");
                 try {
-                    const response = await fetch("valid_example_2.json");
+                    const response = await fetch("src/valid_example_2.json");
                     if (!response.ok) throw new Error("File not found");
                     const text = await response.text(); 
                     box.textContent = "Valid example 2:\n\n" + text;
@@ -80,7 +80,7 @@ reviewing this submission, or if I can keep it.-->
             async function loadSchema() {
                 const box = document.getElementById("fileboxSchema");
                 try {
-                    const response = await fetch("schema.json");
+                    const response = await fetch("src/schema.json");
                     if (!response.ok) throw new Error("File not found");
                     const text = await response.text(); 
                     box.textContent = "Schema:\n\n" + text;
@@ -96,9 +96,9 @@ reviewing this submission, or if I can keep it.-->
             async function runTest1() {
                 const output = document.getElementById("output1");
                 try {
-                    const schemaResponse = await fetch("schema.json");
+                    const schemaResponse = await fetch("src/schema.json");
                     const schema = await schemaResponse.json();
-                    const exampleResponse1 = await fetch("valid_example_1.json");
+                    const exampleResponse1 = await fetch("src/valid_example_1.json");
                     const example1 = await exampleResponse1.json();
                     const ajv = new Ajv();
                     const validate = ajv.compile(schema);
@@ -115,9 +115,9 @@ reviewing this submission, or if I can keep it.-->
             async function runTest2() {
                 const output = document.getElementById("output2");
                 try {
-                    const schemaResponse = await fetch("schema.json");
+                    const schemaResponse = await fetch("src/schema.json");
                     const schema = await schemaResponse.json();
-                    const exampleResponse2 = await fetch("valid_example_2.json");
+                    const exampleResponse2 = await fetch("src/valid_example_2.json");
                     const example2 = await exampleResponse2.json();
                     const ajv = new Ajv();
                     const validate = ajv.compile(schema);
