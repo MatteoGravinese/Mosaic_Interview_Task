@@ -1,0 +1,136 @@
+<!--Hello Mr. Moritz, I just wanted to write in here before I forgot,
+VSCode won't let me use 
+"$schema": "https://json-schema.org/draft/2020-12/schema"
+so I am using the older
+"$schema": "http://json-schema.org/draft-07/schema#"
+in my JSON schema file. Please let me know if this causes any issues for you when
+reviewing this submission, or if I can keep it.-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JSON Schema Test</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ajv/6.12.6/ajv.min.js"></script>
+        <style>
+            .scroll_box {
+                height: 50vh;
+                width: 30vw;
+                overflow-y: auto;
+                border: 1px solid #ccc;
+                background: #f9f9f9;
+                white-space: pre;
+                font-family: monospace;
+            }
+            .box_container {
+                display: flex; 
+                gap: 20px;
+                margin-top: 1em;
+                margin-bottom: 1em;
+            }  
+            .test_block {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Schema Tester:</h1>
+        <div class="box_container">
+            <div class=".test_block">
+                <div class="box_container">
+                    <div class="scroll_box" id="fileBox1"></div>
+                </div>
+                <button onclick="runTest1()">Run test for example 1</button>
+                <pre id="output1"></pre>
+            </div>
+            <div class=".test_block">
+                <div class="box_container">
+                    <div class="scroll_box" id="fileBox2"></div>
+                </div>
+                <button onclick="runTest2()">Run test for example 2</button>
+                <pre id="output2"></pre>
+            </div>
+            <div class="box_container">
+                <div class="scroll_box" id="fileboxSchema"></div>
+            </div>
+        </div>
+        <script>
+           async function loadJSON1() {
+                const box = document.getElementById("fileBox1");
+                try {
+                    const response = await fetch("valid_example_1.json");
+                    if (!response.ok) throw new Error("File not found");
+                    const text = await response.text(); 
+                    box.textContent = "Valid example 1:\n\n" + text;
+                } catch (err) {
+                    box.textContent = "Error loading JSON: " + err.message;
+                }
+            }
+            async function loadJSON2() {
+                const box = document.getElementById("fileBox2");
+                try {
+                    const response = await fetch("valid_example_2.json");
+                    if (!response.ok) throw new Error("File not found");
+                    const text = await response.text(); 
+                    box.textContent = "Valid example 2:\n\n" + text;
+                } catch (err) {
+                    box.textContent = "Error loading JSON: " + err.message;
+                }
+            }
+            async function loadSchema() {
+                const box = document.getElementById("fileboxSchema");
+                try {
+                    const response = await fetch("schema.json");
+                    if (!response.ok) throw new Error("File not found");
+                    const text = await response.text(); 
+                    box.textContent = "Schema:\n\n" + text;
+                } catch (err) {
+                    box.textContent = "Error loading JSON: " + err.message;
+                }
+            }
+            window.onload = function() {
+                loadJSON1();
+                loadJSON2();
+                loadSchema();
+            };
+            async function runTest1() {
+                const output = document.getElementById("output1");
+                try {
+                    const schemaResponse = await fetch("schema.json");
+                    const schema = await schemaResponse.json();
+                    const exampleResponse1 = await fetch("valid_example_1.json");
+                    const example1 = await exampleResponse1.json();
+                    const ajv = new Ajv();
+                    const validate = ajv.compile(schema);
+                    const valid = validate(example1);
+                    if (valid) {
+                        output1.textContent = "The example is valid.";
+                    } else {
+                        output1.textContent = "The example is invalid:\n" + JSON.stringify(validate.errors, null, 2);
+                    }
+                } catch (err) {
+                    output1.textContent = "Error: " + err.message;
+                }
+            }
+            async function runTest2() {
+                const output = document.getElementById("output2");
+                try {
+                    const schemaResponse = await fetch("schema.json");
+                    const schema = await schemaResponse.json();
+                    const exampleResponse2 = await fetch("valid_example_2.json");
+                    const example2 = await exampleResponse2.json();
+                    const ajv = new Ajv();
+                    const validate = ajv.compile(schema);
+                    const valid = validate(example2);
+                    if (valid) {
+                        output2.textContent = "The example is valid.";
+                    } else {
+                        output2.textContent = "The example is invalid:\n" + JSON.stringify(validate.errors, null, 2);
+                    }
+                } catch (err) {
+                    output2.textContent = "Error: " + err.message;
+                }
+            }
+        </script>
+    </body>
+</html> 

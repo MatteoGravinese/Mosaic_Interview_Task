@@ -1,0 +1,41 @@
+{
+    "type": "layout",
+    "direction": "vertical",
+    "gap": "10px",
+    "children": [
+        {
+            "type": "visualization",
+            "mark": "bar",
+            "encoding": {
+                "x": "Temperature",
+                "y": "Frequency",
+                "color": "blue"
+            }
+        },
+        {
+            "type": "layout",
+            "direction": "horizontal",
+            "gap": "30px",
+            "children": [
+                {
+                    "type": "visualization",
+                    "mark": "line",
+                    "encoding": {
+                        "x": "Altitude",
+                        "y": "Air Pressure",
+                        "color": "orange"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "visualization",
+            "mark": "line",
+            "encoding": {
+                "x": "Time",
+                "y": "Distance",
+                "color": "cyan"
+            }
+        }
+    ]
+}

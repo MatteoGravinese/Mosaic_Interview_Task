@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "oneOf": [
+        {"$ref": "#/definitions/visualization"},
+        {"$ref": "#/definitions/layout"}
+    ],
+    "definitions": {
+        "layout": {
+            "type": "object",
+            "properties": {
+                "type": {"const": "layout"},
+                "direction": {"enum": ["horizontal", "vertical"]},
+                "gap": {"type": "string"},
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {"$ref": "#/definitions/visualization"},
+                            {"$ref": "#/definitions/layout"}
+                        ]
+                    }
+                }
+            },
+            "required": ["type", "direction", "gap", "children"]
+        },
+        "visualization": {
+            "type": "object",
+            "properties": {
+                "type": {"const": "visualization"},
+                "mark": {"enum": ["bar", "line", "point", "area"]},
+                "encoding": {
+                    "type": "object",
+                    "properties": {
+                        "x": {"type": "string"},
+                        "y": {"type": "string"},
+                        "color": {"type": "string"} 
+                    },
+                    "required": ["x", "y", "color"],
+                    "additionalProperties": false
+                }
+            },
+            "required": ["type", "mark", "encoding"],
+            "additionalProperties": false
+        }
+    }
+}

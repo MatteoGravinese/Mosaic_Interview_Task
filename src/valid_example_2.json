@@ -1,0 +1,32 @@
+{
+    "type": "layout",
+    "direction": "horizontal",
+    "gap": "14px",
+    "children": [
+        {
+            "type": "visualization",
+            "mark": "point",
+            "encoding": {
+                "x": "IQ",
+                "y": "Weight",
+                "color": "red"
+            }
+        },
+        {
+            "type": "layout",
+            "direction": "vertical",
+            "gap": "33px",
+            "children": [
+                {
+                    "type": "visualization",
+                    "mark": "area",
+                    "encoding": {
+                        "x": "Car Brand",
+                        "y": "Percentage of Cars",
+                        "color": "green"
+                    }
+                }
+            ]
+        }
+    ]
+}
