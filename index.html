@@ -34,13 +34,13 @@ reviewing this submission, or if I can keep it.-->
                 flex-direction: column;
                 align-items: flex-start;
             }
-            #output {
+            .output {
                 display: block;
                 background-color: #1e1e1e;
                 color: #ffffff;
                 font-family: monospace;
-                width: 600px;
-                height: 300px;
+                width: 30vw;
+                height: 50vh;
                 padding: 10px;
                 border-radius: 6px;
                 overflow-y: auto;
@@ -78,19 +78,33 @@ reviewing this submission, or if I can keep it.-->
                 </div>
             </div>
             <h2>Python Code:</h2>
-            <button py-click="run_simulation">Run Code</button>
             <div class="box_container">
-                <div id="output"></div>
+                <div class="test_block">
+                    <button py-click="run_simulation">Run Python Example 1</button>
+                    <div id="output3" class="output"></div>
+                </div>
+                <div class="test_block">
+                    <button py-click="run_simulation1">Run Run Python Example 2</button>
+                    <div id="output4" class="output"></div>
+                </div>
                 <div class="scroll_box" id="pyFileBox"></div>
             </div>
         </div>
-        <py-script output="output">
-            async def run_simulation(*args, **kwargs):
+        <py-script>
+            async def run_simulation1(*args, **kwargs):
                 from js import document
-                term = document.querySelector("#output")
+                term = document.querySelector("#output4")
                 term.innerHTML=''
                 import builder_classes
-                term.innerHTML += f"{builder_classes.function()}"
+                term.innerHTML += f"{builder_classes.returnjson1()}"
+        </py-script>
+        <py-script>
+            async def run_simulation1(*args, **kwargs):
+                from js import document
+                term = document.querySelector("#output4")
+                term.innerHTML=''
+                import builder_classes
+                term.innerHTML += f"{builder_classes.returnjson2()}"
         </py-script>
         <script>
            async function loadJSON1() {
