@@ -10,6 +10,8 @@ reviewing this submission, or if I can keep it.-->
     <head>
         <title>JSON Schema Test</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ajv/6.12.6/ajv.min.js"></script>
+        <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css" />
+        <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
         <style>
             .scroll_box {
                 height: 50vh;
@@ -25,35 +27,71 @@ reviewing this submission, or if I can keep it.-->
                 gap: 20px;
                 margin-top: 1em;
                 margin-bottom: 1em;
+                align-items: flex-start;
             }  
             .test_block {
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
             }
+            #output {
+                display: block;
+                background-color: #1e1e1e;
+                color: #ffffff;
+                font-family: monospace;
+                width: 600px;
+                height: 300px;
+                padding: 10px;
+                border-radius: 6px;
+                overflow-y: auto;
+                white-space: pre-wrap;
+            }
         </style>
+        <py-config type="json">
+            {
+                "files": {
+                "src/builder_classes.py": "builder_classes.py"
+                }
+            }
+        </py-config>
     </head>
     <body>
         <h1>Schema Tester:</h1>
-        <div class="box_container">
-            <div class=".test_block">
-                <div class="box_container">
-                    <div class="scroll_box" id="fileBox1"></div>
-                </div>
-                <button onclick="runTest1()">Run test for example 1</button>
-                <pre id="output1"></pre>
-            </div>
-            <div class=".test_block">
-                <div class="box_container">
-                    <div class="scroll_box" id="fileBox2"></div>
-                </div>
-                <button onclick="runTest2()">Run test for example 2</button>
-                <pre id="output2"></pre>
-            </div>
+        <div class="test_block">
             <div class="box_container">
-                <div class="scroll_box" id="fileboxSchema"></div>
+                <div class="test_block">
+                    <div class="box_container">
+                        <div class="scroll_box" id="fileBox1"></div>
+                    </div>
+                    <button onclick="runTest1()">Run test for example 1</button>
+                    <pre id="output1"></pre>
+                </div>
+                <div class="test_block">
+                    <div class="box_container">
+                        <div class="scroll_box" id="fileBox2"></div>
+                    </div>
+                    <button onclick="runTest2()">Run test for example 2</button>
+                    <pre id="output2"></pre>
+                </div>
+                <div class="box_container">
+                    <div class="scroll_box" id="fileboxSchema"></div>
+                </div>
+            </div>
+            <h2>Python Code:</h2>
+            <button py-click="run_simulation">Run Code</button>
+            <div class="box_container">
+                <div id="output"></div>
+                <div class="scroll_box" id="pyFileBox"></div>
             </div>
         </div>
+        <py-script output="output">
+            async def run_simulation(*args, **kwargs):
+                from js import document
+                term = document.querySelector("#output")
+                term.innerHTML=''
+                import builder_classes
+                term.innerHTML += f"{builder_classes.function()}"
+        </py-script>
         <script>
            async function loadJSON1() {
                 const box = document.getElementById("fileBox1");
@@ -61,7 +99,7 @@ reviewing this submission, or if I can keep it.-->
                     const response = await fetch("src/valid_example_1.json");
                     if (!response.ok) throw new Error("File not found");
                     const text = await response.text(); 
-                    box.textContent = "Valid example 1:\n\n" + text;
+                    box.textContent = "Valid example 1:\n\n\n" + text;
                 } catch (err) {
                     box.textContent = "Error loading JSON: " + err.message;
                 }
@@ -72,7 +110,7 @@ reviewing this submission, or if I can keep it.-->
                     const response = await fetch("src/valid_example_2.json");
                     if (!response.ok) throw new Error("File not found");
                     const text = await response.text(); 
-                    box.textContent = "Valid example 2:\n\n" + text;
+                    box.textContent = "Valid example 2:\n\n\n" + text;
                 } catch (err) {
                     box.textContent = "Error loading JSON: " + err.message;
                 }
@@ -83,16 +121,11 @@ reviewing this submission, or if I can keep it.-->
                     const response = await fetch("src/schema.json");
                     if (!response.ok) throw new Error("File not found");
                     const text = await response.text(); 
-                    box.textContent = "Schema:\n\n" + text;
+                    box.textContent = "Schema:\n\n\n" + text;
                 } catch (err) {
                     box.textContent = "Error loading JSON: " + err.message;
                 }
             }
-            window.onload = function() {
-                loadJSON1();
-                loadJSON2();
-                loadSchema();
-            };
             async function runTest1() {
                 const output = document.getElementById("output1");
                 try {
@@ -131,6 +164,23 @@ reviewing this submission, or if I can keep it.-->
                     output2.textContent = "Error: " + err.message;
                 }
             }
+            async function loadPY1() {
+                const box = document.getElementById("pyFileBox");
+                try {
+                    const response = await fetch("src/builder_classes.py");
+                    if (!response.ok) throw new Error("File not found");
+                    const text = await response.text(); 
+                    box.textContent = "Python Code:\n\n\n" + text;
+                } catch (err) {
+                    box.textContent = "Error loading Python: " + err.message;
+                }
+            }
+            window.onload = function() {
+                loadJSON1();
+                loadJSON2();
+                loadSchema();
+                loadPY1();
+            };
         </script>
     </body>
-</html> 
+</html>
