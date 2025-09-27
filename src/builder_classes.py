@@ -23,7 +23,7 @@ class Visualization:
         return self
     def build(self):
         return {
-            "type": "Visualization",
+            "type": "visualization",
             "mark": self._mark,
             "encoding": self._encoding
         }
@@ -44,7 +44,7 @@ class Layout:
         return self
     def build(self):
         return{
-            "type": "Layout",
+            "type": "layout",
             "direction": self._direction,
             "gap": self._gap,
             "children": self._children
@@ -58,7 +58,7 @@ json1 = layout().direction("vertical").gap("10px").add_child(
         .add_encoding(
             encoding()
                 .channel("x").field("Temperature")
-                .channel("y").field("Weather")
+                .channel("y").field("Frequency")
                 .channel("color").field("blue")
         ),
     layout().direction("horizontal").gap("30px").add_child(
@@ -71,6 +71,14 @@ json1 = layout().direction("vertical").gap("10px").add_child(
                     .channel("color").field("orange")
             )
     ),
+    visualization()
+        .mark("line")
+        .add_encoding(
+            encoding()
+                .channel("x").field("Time")
+                .channel("y").field("Distance")
+                .channel("color").field("cyan")
+        )
 )
 json2= layout().direction("horizontal").gap("14px").add_child(
     visualization()
@@ -87,7 +95,7 @@ json2= layout().direction("horizontal").gap("14px").add_child(
             .add_encoding(
                 encoding()
                     .channel("x").field("Car Brand")
-                    .channel("y").field("percentage of Cars")
+                    .channel("y").field("Percentage of Cars")
                     .channel("color").field("green")
             )
     )
@@ -96,4 +104,3 @@ def returnjson1():
     return json.dumps(json1.build(), indent=2)
 def returnjson2():
     return json.dumps(json2.build(), indent=2)
-function()

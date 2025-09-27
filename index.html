@@ -50,7 +50,8 @@ reviewing this submission, or if I can keep it.-->
         <py-config type="json">
             {
                 "files": {
-                "src/builder_classes.py": "builder_classes.py"
+                "src/builder_classes.py": "builder_classes.py",
+                "src/test_builder_cases.py": "test_builder_cases.py"
                 }
             }
         </py-config>
@@ -77,35 +78,54 @@ reviewing this submission, or if I can keep it.-->
                     <div class="scroll_box" id="fileboxSchema"></div>
                 </div>
             </div>
-            <h2>Python Code:</h2>
+            <h1>Python Builder:</h1>
             <div class="box_container">
                 <div class="test_block">
-                    <button py-click="run_simulation">Run Python Example 1</button>
                     <div id="output3" class="output"></div>
+                    <br>
+                    <button py-click="run_simulation1">Run Python Example 1</button>
                 </div>
                 <div class="test_block">
-                    <button py-click="run_simulation1">Run Run Python Example 2</button>
                     <div id="output4" class="output"></div>
+                    <br>
+                    <button py-click="run_simulation2">Run Python Example 2</button>
                 </div>
                 <div class="scroll_box" id="pyFileBox"></div>
             </div>
+            <h1>Python Unit Test:</h1>
+            <div class="test_block">
+                <div id="output5" class="output"></div>
+                <br>
+                <button py-click="run_unit_tests">Run Unit Test</button>
+            </div>
         </div>
         <py-script>
+            import builder_classes
+            import test_builder_cases
+            from js import document
             async def run_simulation1(*args, **kwargs):
-                from js import document
+                term = document.querySelector("#output3")
+                term.innerHTML=''
+                term.innerHTML += f"{builder_classes.returnjson1()}"
+            async def run_simulation2(*args, **kwargs):
                 term = document.querySelector("#output4")
                 term.innerHTML=''
-                import builder_classes
-                term.innerHTML += f"{builder_classes.returnjson1()}"
+                term.innerHTML += f"{builder_classes.returnjson2()}"
+            async def run_simulation2(*args, **kwargs):
+                term = document.querySelector("#output5")
+                term.innerHTML=''
+                term.innerHTML += f"{test_builder_cases.test_generate_example1_output()}"
+                term.innerHTML += f"{test_builder_cases.test_generate_example2_output()}"
         </py-script>
         <py-script>
-            async def run_simulation1(*args, **kwargs):
-                from js import document
-                term = document.querySelector("#output4")
-                term.innerHTML=''
-                import builder_classes
-                term.innerHTML += f"{builder_classes.returnjson2()}"
+from js import document
+import test_builder_cases
+def run_tests(event=None):
+    output_box = document.getElementById("#output5")
+    output_box.innerText = test_builder_cases.run_unittests()
+document.getElementById("run-tests").addEventListener("click", run_tests)
         </py-script>
+    </py-script>
         <script>
            async function loadJSON1() {
                 const box = document.getElementById("fileBox1");
