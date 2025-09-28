@@ -52,6 +52,7 @@ reviewing this submission, or if I can keep it.-->
                 "files": {
                 "src/builder_classes.py": "builder_classes.py",
                 "src/test_builder_cases.py": "test_builder_cases.py"
+                
                 }
             }
         </py-config>
@@ -78,54 +79,48 @@ reviewing this submission, or if I can keep it.-->
                     <div class="scroll_box" id="fileboxSchema"></div>
                 </div>
             </div>
-            <h1>Python Builder:</h1>
+            <h1>Python Code:</h1>
             <div class="box_container">
                 <div class="test_block">
                     <div id="output3" class="output"></div>
-                    <br>
-                    <button py-click="run_simulation1">Run Python Example 1</button>
+                    <button py-click="run_simulation1" style="margin-top: 20px;">Run Python Example 1</button>
                 </div>
                 <div class="test_block">
                     <div id="output4" class="output"></div>
-                    <br>
-                    <button py-click="run_simulation2">Run Python Example 2</button>
+                    <button py-click="run_simulation2" style="margin-top: 20px;">Run Python Example 2</button>
                 </div>
                 <div class="scroll_box" id="pyFileBox"></div>
             </div>
-            <h1>Python Unit Test:</h1>
-            <div class="test_block">
+            <h1>Python Code Tester:</h1>
+            <div class="box_container">
                 <div id="output5" class="output"></div>
-                <br>
-                <button py-click="run_unit_tests">Run Unit Test</button>
+                <div class="scroll_box" id="test_builder_cases"></div>
             </div>
+            <button py-click="run_simulation3" style="margin-top: 20px;">Test</button>
         </div>
         <py-script>
-            import builder_classes
-            import test_builder_cases
-            from js import document
             async def run_simulation1(*args, **kwargs):
+                from js import document
                 term = document.querySelector("#output3")
                 term.innerHTML=''
+                import builder_classes
                 term.innerHTML += f"{builder_classes.returnjson1()}"
             async def run_simulation2(*args, **kwargs):
+                from js import document
                 term = document.querySelector("#output4")
                 term.innerHTML=''
+                import builder_classes
                 term.innerHTML += f"{builder_classes.returnjson2()}"
-            async def run_simulation2(*args, **kwargs):
+            async def run_simulation3(*args, **kwargs):
+                from js import document
                 term = document.querySelector("#output5")
                 term.innerHTML=''
-                term.innerHTML += f"{test_builder_cases.test_generate_example1_output()}"
-                term.innerHTML += f"{test_builder_cases.test_generate_example2_output()}"
+                import test_builder_cases
+                term.innerHTML += f"Testing first Python file: \n"
+                term.innerHTML += f"{test_builder_cases.test_builder1()}\n"
+                term.innerHTML += f"Testing second Python file: \n"
+                term.innerHTML += f"{test_builder_cases.test_builder2()}"             
         </py-script>
-        <py-script>
-from js import document
-import test_builder_cases
-def run_tests(event=None):
-    output_box = document.getElementById("#output5")
-    output_box.innerText = test_builder_cases.run_unittests()
-document.getElementById("run-tests").addEventListener("click", run_tests)
-        </py-script>
-    </py-script>
         <script>
            async function loadJSON1() {
                 const box = document.getElementById("fileBox1");
@@ -209,11 +204,23 @@ document.getElementById("run-tests").addEventListener("click", run_tests)
                     box.textContent = "Error loading Python: " + err.message;
                 }
             }
+            async function loadtest_builder() {
+                const box = document.getElementById("test_builder_cases");
+                try {
+                    const response = await fetch("src/test_builder_cases.py");
+                    if (!response.ok) throw new Error("File not found");
+                    const text = await response.text(); 
+                    box.textContent = "Python Test Code:\n\n\n" + text;
+                } catch (err) {
+                    box.textContent = "Error loading Python: " + err.message;
+                }
+            }
             window.onload = function() {
                 loadJSON1();
                 loadJSON2();
                 loadSchema();
                 loadPY1();
+                loadtest_builder();
             };
         </script>
     </body>
